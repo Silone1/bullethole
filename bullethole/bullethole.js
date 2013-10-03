@@ -4,15 +4,19 @@
 var bullethole;
 
 bullethole = (function () {
+    var types = {
+        minMaxStr: 0 // {type: minMaxStr, name: theme.[name], value: [str], length: [len], bounds: [inBounds]}
+    };
+    
     function addMinMaxRecStr(results, str, minmax, name) {
-        if (!str) {
+        if (typeof str !== 'string') {
             return null;
         }
         
         var min = minmax[0],
             max = minmax[1],
             len = str.length,
-            rec = {name: 'Theme: ' + name, value: str, length: len, bounds: true};
+            rec = {type: types.minMaxStr, name: 'theme.' + name, value: str, length: len, bounds: true};
         
         if (len > max || len < min) {
             rec.bounds = false;
@@ -22,13 +26,26 @@ bullethole = (function () {
         return rec;
     }
     
-    function check(theme) {
-        var results = [];
+    function parseSides(theme, results) {
+        var sides = theme.sides,
+            res = [];
         
-        addMinMaxRecStr(results, theme.name, [2, 25], 'name');
-        addMinMaxRecStr(results, theme.summary, [10, 250], 'summary');
-        addMinMaxRecStr(results, theme.border, [10, 250], 'summary');
-        addMinMaxRecStr(results, theme.summary, [10, 250], 'summary');
+        return res;
     }
-    return {check: check};
+    
+    function check(theme) {
+        var results = {global: [], sides: [], roles: [], meta: {name: theme.name, summary: theme.summary, theme: theme}};
+        var sides = parseSides(theme);
+        
+        addMinMaxRecStr(results.global, theme.name, [2, 25], 'name');
+        addMinMaxRecStr(results.global, theme.summary, [10, 450], 'summary');
+        
+        if (sides.length > 0) {
+            results.sides = sides;
+        }
+        
+        return results;
+    }
+    
+    return {check: check, types: types};
 }());
