@@ -1,4 +1,4 @@
 bullethole
 ==========
 
-Analyzers your PO mafia theme.
+Mafia theme documentation.

@@ -3,56 +3,30 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bullethole UI</title>
+    <title>Bullethole - Mafia Theme Documentation</title>
     <link href="css/bootstrap.css" rel="stylesheet">
     <link href="css/nprogress.css" rel="stylesheet">
+    <link href="css/prism.css" rel="stylesheet" type="text/css" />
     <link href="css/style.css" rel="stylesheet">
-    <link href="css/bullethole.css" rel="stylesheet">
+    <link href="css/app.css" rel="stylesheet">
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet">
   </head>
 
   <body>
     <div id="wrapper">
-        <div id="modal" class="modal fade" role="dialog" aria-labelledby="modal-label" aria-hidden="true" role='modal'>
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            <h3 id="modal-label">Load a Theme..</h3>
-          </div>
-          <div class="modal-body">
-            <div class="input-group">
-              <span class="input-group-addon">URL</span>
-              <input type="text" class="form-control" placeholder="pastebin.com/raw.php?i=..." id='theme-url'>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
-            <button class="btn btn-primary"  data-dismiss="modal" aria-hidden="true" id='theme-load'>Load</button>
-          </div>
-        </div>
       <!-- Sidebar -->
       <div id="sidebar-wrapper">
-        <ul class="sidebar-nav">
+        <ul class="sidebar-nav doc-sidebar">
           <li class="sidebar-brand"><a href="#">Bullethole</a></li>
           <li><a href="#">Home</a></li>
-          <li><a href="#modal" id='load-theme-opt' data-toggle='modal'>Load Theme</a></li>
-          <li class='on-theme-load'><a href="#hb-global-header">Global</a></li>
-          <li class='on-theme-load'><a href="#hb-side-header">Sides</a></li>
-          <li class='on-theme-load'><a href="#hb-role-header">Roles</a></li>
         </ul>
       </div>
           
       <!-- Page content -->
       <div id="page-content-wrapper">
-        <div class="content-header">
-          <h1>
-            Bullethole
-          </h1>
-        </div>
         <!-- Keep all page content within the page-content inset div! -->
         <div class="page-content inset">
-          <div id="theme-content">
-              <p class='well' style='width:400px;text-align:center;'><i class='icon-chevron-left'></i> Click on 'Load Theme' to load a theme.</p>
-          </div>
+          <div class="well">Loading...</div>
         </div>
       </div>
       
@@ -62,8 +36,9 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="js/jquery.js"></script>
     <script src="js/bootstrap.js"></script>
+      
     <script src="js/nprogress.js"></script>
-    <script src="bullethole/bullethole.js"></script>
-    <script src="js/ui.js"></script>
+    <script type="text/javascript" src="js/prism.js"></script>
+    <script src="js/app.js"></script>
   </body>
 </html>

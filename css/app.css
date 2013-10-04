@@ -1,0 +1,10 @@
+/* doc-element, doc-element-property, toggle-visibility, doc-element-content, doc-element-description */
+
+.doc-element-property {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.doc-element-content {
+    margin-left: 20px;
+}
