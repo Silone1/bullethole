@@ -11,53 +11,78 @@ $(function () {
     }
     
     function example(code) {
-        return '<pre class="syntax-highlight language-javascript"><code class="language-javascript">' + escapeHtml(code) + '</code></pre>';
+        return '<pre class="syntax-highlight language-javascript"><code>' + escapeHtml(code) + '</code></pre>';
     }
     
     function getElemType(type) {
         type = type.toLowerCase();
-        if (type === "string") {
-            return ['success', '"String"'];
-        } else if (type === "number") {
-            return ['primary', 'Numb3r'];
-        } else if (type === 'array') {
-            return ['warning', '[Array]'];
-        } else if (type === 'boolean') {
-            return ['info', 'Boolean?'];
-        } else if (type === 'object') {
-            return ['default', '{Object}'];
-        }
-        
-        return ['danger', 'Unknown - ' + type];
+        return {string: 'String', number: 'Number', array: 'Array', boolean: 'Boolean', object: 'Object'}[type] || type;
     }
     
     function elemType(type) {
         var len, i, res = [];
-        if (Array.isArray(type)) {
-            for (i = 0, len = type.length; i < len; i += 1) {
-                res.push(getElemType(type[i])[1]);
-            }
-            
-            return ['info', res.join(' | ')];
-        } else {
-            return getElemType(type);
+        
+        if (typeof type === 'string') {
+            type = type.split(" ");
         }
+        
+        for (i = 0, len = type.length; i < len; i += 1) {
+            res.push(getElemType(type[i]));
+        }
+        
+        return res.join(' | ');
     }
     
-    /* doc-element, doc-element-property, toggle-visibility, doc-element-content, doc-element-description */
-    function parseElem(name, elem) {
-        var uniqid = Math.random().toString().substr(2);
-        var requiredText = elem.required ? 'Required' : 'Optional',
-            requiredClass = elem.required ? 'danger' : 'success';
+    function parseElemSimple(name, elem) {
+        var uniqid = Math.random().toString().substr(2) + Math.random().toString().substr(2);
+        var requiredText = elem.required ? 'Required' : 'Optional';
         var type = elemType(elem.type);
+        var properties = '', i;
+        
+        // [{name, description, required, type}]
+        if (elem.properties) {
+            properties = '<ul class="doc-element-properties">';
+            for (i in elem.properties) {
+                properties += '<li class="doc-element-properties-property">' + parseElemSimple(i, elem.properties[i]) + '</li>';
+            }
+            properties += '</ul><br/>';
+        }
 
         return '<div class="doc-element">'
             + '<span class="doc-element-property">' + name + '</span> '
-            + '<span class="label label-' + type[0] + '">' + type[1] + '</span>'
-            + ' <span class="label label-' + requiredClass + '">' + requiredText + '</span>'
+            + '<span class="doc-badge">' + requiredText + ' ' + type + '</span>'
+            + ' <i class="icon-chevron-right toggle-visibility" data-enabled="false" data-target="' + uniqid + '"></i>'
+            + '<br/>'
+            + properties
+            + '<div id="' + uniqid + '" class="init-hidden doc-element-content">'
+            + '<span class="doc-element-description">' + elem.description + '</span>'
+            + '</div>'
+            + '</div>';
+    }
+
+    /* doc-element, doc-element-property, toggle-visibility, doc-element-content, doc-element-description */
+    function parseElem(name, elem) {
+        var uniqid = Math.random().toString().substr(2) + Math.random().toString().substr(2);
+        var requiredText = elem.required ? 'Required' : 'Optional';
+        var type = elemType(elem.type);
+        var properties = '', i;
+        
+        // [{name, description, required, type}]
+        if (elem.properties) {
+            properties = '<ul class="doc-element-properties">';
+            for (i in elem.properties) {
+                properties += '<li class="doc-element-properties-property">' + parseElemSimple(i, elem.properties[i]) + '</li>';
+            }
+            properties += '</ul><br/>';
+        }
+
+        return '<div class="doc-element">'
+            + '<span class="doc-element-property">' + name + '</span> '
+            + '<span class="doc-badge">' + requiredText + ' ' + type + '</span>'
             + ' <i class="icon-chevron-right toggle-visibility" data-enabled="false" data-target="' + uniqid + '"></i>'
             + '<br/>'
             + '<div id="' + uniqid + '" class="init-hidden doc-element-content">'
+            + properties
             + '<span class="doc-element-description">' + elem.description + '</span>'
             + '<br/>' + example(JSON.stringify(elem.example, null, 4))
             + '</div>'
@@ -91,11 +116,13 @@ $(function () {
                     return cycle(prop);
                 }
                 
-                html.push(parseElem(i, prop) + '<br/>');
+                html.push(parseElem(i, prop));
             }
         }
         
+        html.push('<ul>');
         cycle(json);
+        html.push('</ul>');
         
         $('.page-content').html(html.join(''));
         $('.doc-sidebar').append(sidebar.join(''));

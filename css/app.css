@@ -1,10 +1,41 @@
-/* doc-element, doc-element-property, toggle-visibility, doc-element-content, doc-element-description */
+/* doc-element, doc-element-property, toggle-visibility, doc-element-content, doc-element-description, doc-badge */
+
+* {
+    font-family: 'Lucida Grande', 'Lucida Sans Unicode', 'DejaVu Sans', Lucida, Arial, Helvetica, sans-serif;
+}
 
 .doc-element-property {
     font-weight: bold;
-    text-decoration: underline;
+    font-size: 14px;
+    color: rgb(51, 102, 153);
 }
 
 .doc-element-content {
     margin-left: 20px;
+    font-size: 14px;
+}
+
+.doc-badge {
+    border-bottom-color: rgb(129, 129, 81);
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-image-outset: 0px;
+    border-image-repeat: stretch;
+    border-image-slice: 100%;
+    border-image-source: none;
+    border-image-width: 1;
+    border-left-color: rgb(129, 129, 81);
+    border-left-style: solid;
+    border-left-width: 1px;
+    border-right-color: rgb(129, 129, 81);
+    border-right-style: solid;
+    border-right-width: 1px;
+    border-top-color: rgb(129, 129, 81);
+    border-top-style: solid;
+    border-top-width: 1px;
+    font-size: 12px;
+    font-weight: bold;
+    white-space: nowrap;
+    display: inline;
+    color: rgb(51, 51, 51);
 }

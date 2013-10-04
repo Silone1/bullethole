@@ -34,4 +34,22 @@
         required: no
         example:
             killusermsg: '±Bot: You died!'
+    ticks:
+        description: 'Amount of ticks for a phase (night/standby). Minimum is 1, maximum is 60. <br/> A tick in mafia is 1 second. Cannot be applied to the voting phase.'
+        type: 'object'
+        required: no
+        properties:
+            night:
+                description: 'Ticks per night.'
+                type: 'number'
+                required: no
+            standby:
+                description: 'Ticks per standby.'
+                type: 'number'
+                required: no
+        example:
+            ticks:
+                night: 30
+                standby: 40
+            
 }
