@@ -63,9 +63,11 @@ $(function () {
         }
         
         return '<div class="doc-element">'
+            + '<span class="toggle-visibility">'
             + '<span class="doc-element-property">' + name + '</span> '
             + '<span class="doc-badge">' + requiredText + ' ' + type + '</span>'
-            + ' <i class="icon-chevron-right toggle-visibility" data-enabled="false" data-of="' + partOf + '" data-target="' + uniqid + '"></i>'
+            + ' <i class="icon-chevron-right toggle-icon" data-enabled="false" data-of="' + partOf + '" data-target="' + uniqid + '"></i>'
+            + '</span>'
             + '<br/>'
             + '<div id="' + uniqid + '" class="init-hidden doc-element-content">'
             + properties
@@ -175,7 +177,7 @@ $(function () {
         });
         
         $doc.on("click", ".toggle-visibility", function () {
-            var $this = $(this);
+            var $this = $(this).find('.toggle-icon');
             var enabled = $this.data('enabled') || false;
             
             if (enabled) {
