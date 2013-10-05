@@ -1,6 +1,7 @@
 /*jslint continue: true, es5: true, evil: true, forin: true, sloppy: true, vars: true, regexp: true, browser: true, nomen: true*/
 /*global $, NProgress, Prism*/
 
+// Warning: this code is quite messy
 $(function () {
     // Use the browser's built-in functionality to quickly and safely escape the
     // string
@@ -32,38 +33,11 @@ $(function () {
         
         return res.join(' | ');
     }
-    
-    function parseElemSimple(name, elem) {
-        var uniqid = Math.random().toString().substr(2) + Math.random().toString().substr(2);
-        var requiredText = elem.required ? 'Required' : 'Optional';
-        var type = elemType(elem.type);
-        var properties = '', i;
-        
-        // [{name, description, required, type}]
-        if (elem.properties) {
-            properties = '<ul class="doc-element-properties">';
-            for (i in elem.properties) {
-                properties += '<li class="doc-element-properties-property">' + parseElemSimple(i, elem.properties[i]) + '</li>';
-            }
-            properties += '</ul><br/>';
-        }
-
-        return '<div class="doc-element">'
-            + '<span class="doc-element-property">' + name + '</span> '
-            + '<span class="doc-badge">' + requiredText + ' ' + type + '</span>'
-            + ' <i class="icon-chevron-right toggle-visibility" data-enabled="false" data-target="' + uniqid + '"></i>'
-            + '<br/>'
-            + properties
-            + '<div id="' + uniqid + '" class="init-hidden doc-element-content">'
-            + '<span class="doc-element-description">' + elem.description + '</span>'
-            + '</div>'
-            + '</div>';
-    }
 
     /* doc-element, doc-element-property, toggle-visibility, doc-element-content, doc-element-description */
     function parseElem(name, elem) {
         var uniqid = Math.random().toString().substr(2) + Math.random().toString().substr(2);
-        var requiredText = elem.required ? 'Required' : 'Optional';
+        var requiredText = elem.required ? '<span class="doc-element-required">Required</span>' : '<span class="doc-element-optional">Optional</span>';
         var type = elemType(elem.type);
         var properties = '', i;
         
@@ -71,7 +45,7 @@ $(function () {
         if (elem.properties) {
             properties = '<ul class="doc-element-properties">';
             for (i in elem.properties) {
-                properties += '<li class="doc-element-properties-property">' + parseElemSimple(i, elem.properties[i]) + '</li>';
+                properties += '<li class="doc-element-properties-property">' + parseElem(i, elem.properties[i]) + '</li>';
             }
             properties += '</ul><br/>';
         }
@@ -84,7 +58,7 @@ $(function () {
             + '<div id="' + uniqid + '" class="init-hidden doc-element-content">'
             + properties
             + '<span class="doc-element-description">' + elem.description + '</span>'
-            + '<br/>' + example(JSON.stringify(elem.example, null, 4))
+            + (elem.example ? '<br/>' + example(JSON.stringify(elem.example, null, 4)) : '')
             + '</div>'
             + '</div>';
     }

@@ -15,6 +15,14 @@
     font-size: 14px;
 }
 
+.doc-element-required {
+    color: red;
+}
+
+.doc-element-optional {
+    color: blue;
+}
+
 .doc-badge {
     border-bottom-color: rgb(129, 129, 81);
     border-bottom-style: solid;
