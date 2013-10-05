@@ -38,6 +38,7 @@ ul {
 
 .show-all, .hide-all {
     margin-top: -28px;
+    cursor: pointer;
 }
 
 .doc-badge {
