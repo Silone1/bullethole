@@ -1,6 +1,7 @@
 {
   "Global": {
     "__category__": true,
+    "__description__": "Global theme properties",
     "name": {
       "description": "Name of a theme.",
       "type": "string",

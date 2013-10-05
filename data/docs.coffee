@@ -5,6 +5,8 @@
 
 # Categories can have the following meta properties:
 # __category__: boolean
+# __description__: string
+# __summary__: object
 
 # 'required' is optional, but recommended to have even when false.
 # Types: string, boolean, number, object, array, randomobject
@@ -15,12 +17,66 @@
 {
  Global:
     __category__: yes
+    __description__: 'Theme globals'
+    __summary__:
+        name: 'default'
+        author: 'Name'
+        summary: 'Kill them all and have fun!'
+        border: '*** [] [] [] [] [] [] [] [] [] [] [] []'
+        killmsg: '±Bot: ~Player~ (~Role~) is no longer with us!'
+        killusermsg: '±Bot: You died!'
+        lynchmsg: '±Bot: ~Player~ (~Role~ from ~Side~) had ~Count~ dislikes, goodbye!'
+        drawmsg: '±Bot: What is this? Everyone died?'
+        minplayers: 8
+        nolynch: yes
+        votesniping: yes
+        silentVote: yes
+        ticks:
+            night: 30
+            standby: 40
+        sides: [
+            {side: 'Side1', translation: 'Side 1'}
+        ]
+        roles: [
+            {role: 'Role1', translation: 'Role 1', side: 'Side1'}
+        ]
+        roles1: [
+            'role 1'
+            'role 2'
+        ]
+        roles2: [
+            'role 2'
+            'role 3'
+            'role 4'
+        ]
+        roles3: [
+            'role 5'
+            'role 6'
+            {'role 7': 0.5, 'role 3': 0.5}
+        ]
+        villageCantLoseRoles: [
+            'bomb'
+            'vigilante'
+            'mayor'
+            'samurai'
+        ]
     name:
         description: 'Name of a theme.'
         type: 'string'
         required: yes
         example:
             name: 'default'
+    author:
+        description: 'Author(s) of a theme. Anyone who is an author can update the theme.'
+        type: 'string array'
+        required: no
+        notes: [
+            "Although this is optional, it's considered required by many."
+            'Without a valid author, you will be unable to update your theme.'
+        ]
+        example:
+            author: 'Name'
+            author: ['Name1', 'Name2']
     summary:
         description: 'Summary of the theme. Displayed when the theme has opened for signups.'
         type: 'string'
@@ -122,7 +178,7 @@
                 night: 30
                 standby: 40
     sides:
-        description: 'Sides of a theme.'
+        description: 'Sides of a theme. See `Sides`.'
         type: 'array'
         required: yes
         example:
@@ -178,5 +234,53 @@
                 'vigilante'
                 'mayor'
                 'samurai'
+            ]
+ Sides:
+    __category__: yes
+    __description__: 'Global.sides'
+    __notes__: [
+        'Properties documented here are to be used in a side object (an object in the sides array).'
+    ]
+    __summary__:
+        sides: [
+            {
+             side: 'side'
+             translation: 'Side'
+             winmsg: '±WIN: ~Players~ are victorious.'
+            }
+        ]
+    side:
+        description: 'Proto side, used by the code.'
+        type: 'string'
+        notes: [
+            'Use this instead of the translation in properties that request it.'
+            "Special side 'village' can be used for the special villageCantLoseRoles property."
+        ]
+        example:
+            sides: [
+                {
+                 side: 'side'
+                }
+            ]
+    translation:
+        description: 'Name of the side, sent to players.'
+        type: 'string'
+        example:
+            sides: [
+                {
+                 translation: 'Side'
+                }
+            ]
+    winmsg:
+        description: 'Message sent to players when this side wins, instead of the default.'
+        type: 'string'
+        notes: [
+            "[~Players~] is a formatted list of the side's players."
+        ]
+        example:
+            sides: [
+                {
+                 winmsg: '±WIN: ~Players~ are victorious.'
+                }
             ]
 }

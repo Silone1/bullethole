@@ -32,17 +32,12 @@ ul {
     color: blue;
 }
 
-.doc-element-notes-header {
+.doc-element-notes-header, .doc-element-summary-header {
     font-weight: bold;
 }
 
 .show-all, .hide-all {
     margin-top: -28px;
-}
-
-[id^="category-"] {
-    font-weight: bold;
-    font-size: 26px;
 }
 
 .doc-badge {

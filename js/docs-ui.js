@@ -34,6 +34,10 @@ $(function () {
         return res.join(' | ');
     }
 
+    function processNote(note) {
+        return note.replace(/\[(.*?)\]/g, '<span class="doc-note-annotate">$1</span>');
+    }
+    
     /* doc-element, doc-element-property, toggle-visibility, doc-element-content, doc-element-description */
     function parseElem(name, elem, partOf) {
         var uniqid = Math.random().toString().substr(2) + Math.random().toString().substr(2);
@@ -53,7 +57,7 @@ $(function () {
         if (elem.notes) {
             notes = '<ul class="doc-element-notes">';
             for (i = 0, len = elem.notes.length; i < len; i += 1) {
-                notes += '<li class="doc-element-notes-note">' + elem.notes[i].replace(/\[(.*?)\]/g, '<span class="doc-note-annotate">$1</span>') + '</li>';
+                notes += '<li class="doc-element-notes-note">' + processNote(elem.notes[i]) + '</li>';
             }
             notes += '</ul><br/>';
         }
@@ -72,6 +76,16 @@ $(function () {
             + '</div>';
     }
     
+    function hideElement($this) {
+        $this.data('enabled', false).addClass('icon-chevron-right').removeClass('icon-chevron-left');
+        $("#" + $this.data('target')).hide();
+    }
+    
+    function showElement($this) {
+        $this.data('enabled', true).addClass('icon-chevron-left').removeClass('icon-chevron-right');
+        $("#" + $this.data('target')).show();
+    }
+    
     function ajax(file, callback) {
         NProgress.start();
         // jQuery automatically parses the JSON
@@ -81,25 +95,68 @@ $(function () {
     }
     
     ajax('data/docs.min.json', function (json) {
-        var html = [],
+        var $doc = $('#theme-doc'),
+            html = [],
             sidebar = [],
             currentCategory = '',
             len,
             i;
         
         function cycle(obj) {
-            var prop, i;
+            var prop, i, notes = '', summary = '', j, len;
+            
             for (i in obj) {
                 prop = obj[i];
-                if (i === '__category__') {
+                
+                // __category__, etc.
+                if (i.toString().substr(0, 2) === '__') {
                     continue;
                 }
                 
-                if (typeof prop === 'object' && typeof prop.__category__ !== 'undefined' && prop.__category__ === true) {
+                // This object is a category, traverse it.
+                if (prop.__category__ === true) {
                     currentCategory = i;
-                    sidebar.push('<li><a href="#category-' + i + '">' + i + '</li>');
-                    html.push('<span id="category-' + i + '">' + i + '</span> <span class="label label-primary show-all" data-name="' + i + '">Show All</span> <span class="label label-warning hide-all" data-name="' + i + '">Hide All</span> <hr/>');
-                    return cycle(prop);
+                    notes = '';
+                    summary = '';
+                    
+                    sidebar.push(
+                        '<li><a href="#category-' + i + '">' + i + '</li>'
+                    );
+                    
+                    if (prop.__notes__ && prop.__notes__.length) {
+                        notes = '<br/><span class="doc-element-notes-header">Notes:</span><ul class="doc-element-notes">';
+                        
+                        for (j = 0, len = prop.__notes__.length; j < len; j += 1) {
+                            notes += '<li class="doc-element-notes-note">' + processNote(prop.__notes__[j]) + '</li>';
+                        }
+                        
+                        notes += '</ul>';
+                    }
+                    
+                    if (typeof prop.__summary__ === 'object') {
+                        summary = '<br/><span class="doc-element-summary-header">Summary:</span>' + example(JSON.stringify(prop.__summary__, null, 4));
+                    }
+                    
+                    html.push(
+                        '<br/><span id="category-' + i + '" class="h2">' + i
+                            + (prop.__description__ ? ' <small>' + prop.__description__ + '</small>' : '')
+                            + '</span>'
+                            + ' <span class="label label-primary show-all" data-name="' + i + '">Show All</span>'
+                            + ' <span class="label label-warning hide-all" data-name="' + i + '">Hide All</span>'
+                            + '<hr/>'
+                    );
+                    
+                    cycle(prop);
+                    
+                    if (notes.length) {
+                        html.push(notes);
+                    }
+                    
+                    if (summary.length) {
+                        html.push(summary);
+                    }
+                    
+                    continue;
                 }
                 
                 html.push(parseElem(i, prop, currentCategory));
@@ -110,24 +167,12 @@ $(function () {
         cycle(json);
         html.push('</ul>');
         
-        var $doc = $('#theme-doc');
         $doc.html(html.join(''));
         $('.doc-sidebar').append(sidebar.join(''));
+        $('.init-hidden').hide();
         $('.syntax-highlight').each(function (index, elem) {
             Prism.highlightElement(elem);
         });
-        
-        $('.init-hidden').hide();
-        
-        function hideElement($this) {
-            $this.data('enabled', false).addClass('icon-chevron-right').removeClass('icon-chevron-left');
-            $("#" + $this.data('target')).hide();
-        }
-        
-        function showElement($this) {
-            $this.data('enabled', true).addClass('icon-chevron-left').removeClass('icon-chevron-right');
-            $("#" + $this.data('target')).show();
-        }
         
         $doc.on("click", ".toggle-visibility", function () {
             var $this = $(this);
