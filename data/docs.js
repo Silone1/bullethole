@@ -26,9 +26,10 @@
       }
     },
     killmsg: {
-      description: 'Broadcast when someone dies. <br/> ~Player~ is the player who died. ~Role~ is player\'s role.',
+      description: 'Broadcast when someone dies.',
       type: 'string',
       required: false,
+      notes: ['[~Player~] is the player who died.', "[~Role~] is the player's role."],
       example: {
         killmsg: '±Bot: ~Player~ (~Role~) is no longer with us!'
       }
@@ -42,9 +43,10 @@
       }
     },
     ticks: {
-      description: 'Amount of ticks for a phase (night/standby). Minimum is 1, maximum is 60. <br/> A tick in mafia is 1 second. Cannot be applied to the voting phase.',
+      description: 'Amount of ticks for a given phase.',
       type: 'object',
       required: false,
+      notes: ['A tick in Mafia is equal to one (1) second.', 'Cannot be applied to the voting phase.', 'Minimum ticks is 1, maximum ticks is 60'],
       properties: {
         night: {
           description: 'Ticks per night.',
