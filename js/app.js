@@ -97,8 +97,8 @@ $(function () {
                 
                 if (typeof prop === 'object' && typeof prop.__category__ !== 'undefined' && prop.__category__ === true) {
                     currentCategory = i;
-                    sidebar.push('<li><a href="#docs-header-' + i + '">' + i + '</li>');
-                    html.push('<span id="docs-header-' + i + '">' + i + '</span> <span class="label label-primary show-all" data-name="' + i + '">Show All</span> <span class="label label-warning hide-all" data-name="' + i + '">Hide All</span> <hr/>');
+                    sidebar.push('<li><a href="#category-' + i + '">' + i + '</li>');
+                    html.push('<span id="category-' + i + '">' + i + '</span> <span class="label label-primary show-all" data-name="' + i + '">Show All</span> <span class="label label-warning hide-all" data-name="' + i + '">Hide All</span> <hr/>');
                     return cycle(prop);
                 }
                 

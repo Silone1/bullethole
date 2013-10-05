@@ -40,7 +40,7 @@ ul {
     margin-top: -28px;
 }
 
-[id^="docs-header"] {
+[id^="category-"] {
     font-weight: bold;
     font-size: 26px;
 }
