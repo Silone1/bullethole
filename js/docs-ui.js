@@ -17,7 +17,7 @@ $(function () {
     
     function getElemType(type) {
         type = type.toLowerCase();
-        return {string: 'String', number: 'Number', array: 'Array', boolean: 'Boolean', object: 'Object'}[type] || type;
+        return {string: 'String', number: 'Number', array: 'Array', boolean: 'Boolean', object: 'Object', randomobject: 'RandomObject'}[type] || type;
     }
     
     function elemType(type) {
